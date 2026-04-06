@@ -9,6 +9,12 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed. Use POST.' });
   }
 
+  // ── RapidAPI proxy secret check ────────────────────────────────────────────
+  const proxySecret = process.env.RAPIDAPI_PROXY_SECRET;
+  if (proxySecret && req.headers['x-rapidapi-proxy-secret'] !== proxySecret) {
+    return res.status(403).json({ error: 'Forbidden.' });
+  }
+
   // ── Rate limiting ──────────────────────────────────────────────────────────
   const ip =
     (req.headers['x-forwarded-for'] || '').split(',')[0].trim() ||
