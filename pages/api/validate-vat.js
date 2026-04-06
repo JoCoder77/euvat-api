@@ -1,4 +1,4 @@
-import { checkVatWithRetry, isValidCountryCode, ViesError } from '../../lib/vies';
+import { checkVatWithRetry, isValidCountryCode, ViesError, getDataNote } from '../../lib/vies';
 import { checkRateLimit } from '../../lib/rateLimiter';
 import { getCached, setCached, isFresh, logRequest } from '../../lib/supabase';
 
@@ -78,6 +78,7 @@ export default async function handler(req, res) {
       valid: cachedRow.valid,
       companyName: cachedRow.company_name,
       address: cachedRow.address,
+      note: getDataNote(normalizedCountry),
       countryCode: normalizedCountry,
       vatNumber: normalizedVat,
       cached: true,
@@ -102,6 +103,7 @@ export default async function handler(req, res) {
       valid: result.valid,
       companyName: result.companyName,
       address: result.address,
+      note: getDataNote(normalizedCountry),
       countryCode: normalizedCountry,
       vatNumber: normalizedVat,
       cached: false,
@@ -133,6 +135,7 @@ export default async function handler(req, res) {
         valid: cachedRow.valid,
         companyName: cachedRow.company_name,
         address: cachedRow.address,
+        note: getDataNote(normalizedCountry),
         countryCode: normalizedCountry,
         vatNumber: normalizedVat,
         cached: true,
